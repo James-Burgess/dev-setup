@@ -1,0 +1,85 @@
+packages:
+- name: git
+  description: Git version control
+  type: apt
+  package: git
+  check: which git
+  depends_on:
+  - system-update
+- name: gh
+  description: GitHub CLI
+  type: apt
+  package: gh
+  check: which gh
+  depends_on:
+  - system-update
+- name: neovim
+  description: Text editor
+  type: apt
+  package: neovim
+  check: which nvim
+- name: tmux
+  description: Terminal multiplexer
+  type: apt
+  package: tmux
+  check: which tmux
+- name: chezmoi
+  description: Dotfile manager
+  type: script
+  check: which chezmoi
+  commands:
+  - sh -c "$(curl -fsLS https://get.chezmoi.io)"
+- name: delta
+  description: Syntax-aware diff viewer for git
+  type: apt
+  package: git-delta
+  check: which delta
+- name: diff-so-fancy
+  description: Pretty git diffs
+  type: script
+  check: which diff-so-fancy
+  commands:
+  - sudo curl -fsSL https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/diff-so-fancy -o /usr/local/bin/diff-so-fancy
+  - sudo chmod +x /usr/local/bin/diff-so-fancy
+- name: ducker-tui
+  description: Docker TUI (lazydocker)
+  type: script
+  check: which lazydocker
+  depends_on:
+  - docker
+  commands:
+  - curl -fsSL https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
+- name: zed-server
+  description: Zed editor remote server
+  type: script
+  check: which zed
+  commands:
+  - curl -fsSL https://zed.dev/install.sh | sh
+- name: gopass
+  description: Team password manager
+  type: go
+  check: which gopass
+  commands:
+  - go install github.com/gopasspw/gopass@latest
+- name: pcopy
+  description: Encrypted clipboard sync
+  type: go
+  check: which pcopy
+  commands:
+  - go install github.com/binwiederhier/pcopy@latest
+- name: sesh
+  description: Smart tmux session manager
+  type: go
+  check: which sesh
+  commands:
+  - go install github.com/joshmedeski/sesh/v2@latest
+- name: browsr
+  description: CLI file browser
+  type: pip
+  package: browsr
+  check: which browsr
+- name: crawley
+  description: Fast web crawler
+  type: go
+  package: github.com/s0rg/crawley/cmd/crawley
+  check: which crawley

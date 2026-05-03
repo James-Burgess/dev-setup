@@ -1,0 +1,106 @@
+packages:
+- name: system-update
+  description: Apt update + upgrade
+  type: apt
+  commands:
+  - sudo apt update -y && sudo apt upgrade -y
+- name: build-essential
+  description: Build tools (gcc, make, libc-dev)
+  type: apt
+  package: build-essential
+  check: which gcc
+- name: curl-wget
+  description: curl & wget
+  type: apt
+  package: curl
+  check: which curl
+  commands:
+  - sudo apt install -y curl wget
+- name: zsh
+  description: Z shell
+  type: apt
+  package: zsh
+  check: which zsh
+- name: oh-my-zsh
+  description: Zsh framework
+  type: script
+  check: test -d ~/.oh-my-zsh
+  depends_on:
+  - zsh
+  commands:
+  - curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash || true
+- name: starship
+  description: Minimal blazing-fast customizable prompt
+  type: script
+  check: which starship
+  depends_on:
+  - zsh
+  commands:
+  - curl -sS https://starship.rs/install.sh | sh -s -- -y
+- name: zoxide
+  description: Smarter cd that learns your habits
+  type: script
+  check: which zoxide
+  depends_on:
+  - zsh
+  commands:
+  - curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+- name: atuin
+  description: Magical shell history with encrypted sync
+  type: script
+  check: which atuin
+  depends_on:
+  - zsh
+  commands:
+  - bash <(curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh)
+- name: gnupg
+  description: GPG encryption & signing
+  type: apt
+  package: gnupg
+  check: which gpg
+- name: mosh
+  description: Mobile (roaming) SSH
+  type: apt
+  package: mosh
+  check: which mosh
+- name: htop
+  description: Process viewer
+  type: apt
+  package: htop
+  check: which htop
+- name: btop
+  description: Fancy resource monitor
+  type: apt
+  package: btop
+  check: which btop
+- name: ttyplot
+  description: Terminal plotting
+  type: apt
+  package: ttyplot
+  check: which ttyplot
+- name: asciinema
+  description: Terminal recording
+  type: apt
+  package: asciinema
+  check: which asciinema
+- name: glances
+  description: System monitor
+  type: pip
+  package: glances[all]
+  check: which glances
+  depends_on:
+  - python3-pip
+- name: imgcat
+  description: Terminal image display
+  type: pip
+  package: imgcat
+  check: which imgcat
+  depends_on:
+  - python3-pip
+- name: bashorg-motd
+  description: bash.org quote MOTD
+  type: script
+  check: test -f /usr/local/bin/bashorg-motd
+  commands:
+  - sudo curl -fsSL https://raw.githubusercontent.com/graydot/bashorg-motd/master/motd.sh -o /usr/local/bin/bashorg-motd
+  - sudo chmod +x /usr/local/bin/bashorg-motd

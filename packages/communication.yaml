@@ -1,0 +1,27 @@
+packages:
+- name: signal-cli
+  description: Signal CLI (needs Java)
+  type: script
+  check: which signal-cli
+  commands:
+  - sudo apt install -y default-jre
+  - VERSION=$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/AsamK/signal-cli/releases/latest | sed 's/.*\/v//') && curl -fsSL "https://github.com/AsamK/signal-cli/releases/download/v${VERSION}/signal-cli-${VERSION}.tar.gz" -o /tmp/signal-cli.tar.gz && sudo tar xf /tmp/signal-cli.tar.gz -C /opt && sudo ln -sf "/opt/signal-cli-${VERSION}/bin/signal-cli" /usr/local/bin/signal-cli && rm /tmp/signal-cli.tar.gz
+- name: whatsapp-cli
+  description: WhatsApp CLI
+  type: npm
+  check: which whatsapp-cli
+  commands:
+  - npm install -g whatsapp-cli
+- name: teams-cli
+  description: Teams CLI
+  type: npm
+  check: which teams-for-linux
+  commands:
+  - "npm install -g teams-for-linux 2>/dev/null || echo \"  ⚠  teams-for-linux may need snap instead\""
+- name: discord-cli
+  description: Discord TUI (discordo)
+  type: go
+  check: which discordo
+  commands:
+  - sudo apt install -y libx11-dev
+  - go install github.com/ayn2op/discordo@latest

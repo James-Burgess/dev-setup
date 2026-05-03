@@ -1,0 +1,84 @@
+packages:
+- name: nmap
+  description: Network scanner
+  type: apt
+  package: nmap
+  check: which nmap
+- name: theHarvester
+  description: OSINT harvester
+  type: script
+  check: which theHarvester
+  commands:
+  - sudo apt install -y git pipx python3-venv
+  - test -d /tmp/theHarvester || git clone https://github.com/laramies/theHarvester.git /tmp/theHarvester
+  - cd /tmp/theHarvester && pipx install --python python3 .
+  - pipx ensurepath
+- name: recon-ng
+  description: Web recon framework
+  type: script
+  check: test -x /usr/local/bin/recon-ng
+  commands:
+  - sudo apt install -y git python3-venv
+  - test -d /opt/recon-ng || sudo git clone https://github.com/lanmaster53/recon-ng.git /opt/recon-ng
+  - cd /opt/recon-ng && sudo python3 -m venv venv && sudo venv/bin/pip install -r REQUIREMENTS
+  - sudo ln -sf /opt/recon-ng/recon-ng /usr/local/bin/recon-ng
+  - sudo ln -sf /opt/recon-ng/recon-cli /usr/local/bin/recon-cli
+- name: amass
+  description: Network mapping (OWASP)
+  type: go
+  check: which amass
+  commands:
+  - go install -v github.com/owasp-amass/amass/v4/...@master
+- name: mitmproxy
+  description: Intercepting proxy
+  type: apt
+  package: mitmproxy
+  check: which mitmproxy
+- name: sqlmap
+  description: SQL injection
+  type: apt
+  package: sqlmap
+  check: which sqlmap
+- name: netcat
+  description: TCP/UDP Swiss-knife
+  type: apt
+  package: netcat-openbsd
+  check: which nc
+- name: hydra
+  description: Login brute-force
+  type: apt
+  package: hydra
+  check: which hydra
+- name: john
+  description: John the Ripper
+  type: apt
+  package: john
+  check: which john
+- name: metasploit
+  description: Pentest framework
+  type: script
+  check: which msfconsole
+  commands:
+  - curl -fsSL https://raw.githubusercontent.com/rapid7/metasploit-framework/master/docs/setup.sh | bash 2>/dev/null || true
+- name: subfinder
+  description: Subdomain discovery
+  type: go
+  check: which subfinder
+  commands:
+  - go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+- name: ffuf
+  description: Fast web fuzzer
+  type: go
+  check: which ffuf
+  commands:
+  - go install github.com/ffuf/ffuf/v2@latest
+- name: nuclei
+  description: Vuln templates
+  type: go
+  check: which nuclei
+  commands:
+  - go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
+- name: sherlock
+  description: Social username search
+  type: pip
+  check: which sherlock

@@ -1,0 +1,35 @@
+packages:
+- name: python3-pip
+  description: Python3 + pip + venv
+  type: apt
+  package: python3-pip
+  check: which pip3
+  depends_on:
+  - system-update
+- name: go
+  description: Go toolchain
+  type: apt
+  package: golang-go
+  check: which go
+  post_install:
+  - 'grep -q "$HOME/go/bin" ~/.bashrc || echo "export PATH=\"$HOME/go/bin:$PATH\"" >> ~/.bashrc'
+- name: pyenv
+  description: Python version manager
+  type: script
+  check: test -d ~/.pyenv
+  depends_on:
+  - build-essential
+  commands:
+  - curl https://pyenv.run | bash
+- name: rust
+  description: Rust via rustup
+  type: script
+  check: which cargo
+  commands:
+  - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+- name: nvm
+  description: Node version manager
+  type: script
+  check: test -d ~/.nvm
+  commands:
+  - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash

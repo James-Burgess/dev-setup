@@ -1,0 +1,15 @@
+packages:
+- name: netmon
+  description: nethogs, iftop, nload, iperf3, tcpdump
+  type: apt
+  check: which nethogs
+  commands:
+  - sudo apt install -y nethogs iftop nload iperf3 tcpdump
+- name: tailscale
+  description: Mesh VPN
+  type: script
+  check: which tailscale
+  commands:
+  - curl -fsSL https://tailscale.com/install.sh | sh
+  depends_on:
+  - system-update

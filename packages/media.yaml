@@ -1,0 +1,18 @@
+packages:
+- name: vlc
+  description: VLC media player
+  type: snap
+  check: which vlc
+  commands:
+  - sudo snap install vlc
+- name: aria2
+  description: CLI torrent + HTTP downloader
+  type: apt
+  package: aria2
+  check: which aria2c
+- name: webtorrent-cli
+  description: WebTorrent CLI
+  type: npm
+  check: which webtorrent
+  commands:
+  - npm install -g webtorrent-cli

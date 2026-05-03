@@ -1,0 +1,22 @@
+packages:
+- name: ollama
+  description: Local LLM runner
+  type: script
+  check: which ollama
+  commands:
+  - curl -fsSL https://ollama.com/install.sh | sh
+  depends_on:
+  - system-update
+- name: opencode
+  description: AI CLI code assistant
+  type: script
+  check: which opencode
+  commands:
+  - npm install -g @sst/terminal 2>/dev/null || true
+- name: browser-use
+  description: AI browser agent
+  type: pip
+  package: browser-use
+  check: python3 -c "import browser_use" 2>/dev/null
+  depends_on:
+  - python3-pip

@@ -1,0 +1,82 @@
+packages:
+- name: docker
+  description: Docker CE
+  type: script
+  check: which docker
+  commands:
+  - curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+  - sudo sh /tmp/get-docker.sh
+  - rm /tmp/get-docker.sh
+  post_install:
+  - sudo groupadd docker 2>/dev/null; sudo usermod -aG docker $USER
+  depends_on:
+  - system-update
+- name: docker-compose
+  description: Docker Compose v2
+  type: apt
+  package: docker-compose-v2
+  check: docker compose version 2>/dev/null
+  depends_on:
+  - docker
+- name: terraform
+  description: Infrastructure as code
+  type: script
+  check: which terraform
+  commands:
+  - wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+  - echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+  - sudo apt update && sudo apt install -y terraform
+- name: minikube
+  description: Local K8s
+  type: script
+  check: which minikube
+  depends_on:
+  - docker
+  commands:
+  - curl -fsSL https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 -o /tmp/minikube
+  - sudo install /tmp/minikube /usr/local/bin/minikube
+  - rm /tmp/minikube
+- name: kubectl
+  description: Kubernetes CLI
+  type: script
+  check: which kubectl
+  commands:
+  - curl -fsSL "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" | sudo tee /usr/local/bin/kubectl >/dev/null
+  - sudo chmod +x /usr/local/bin/kubectl
+- name: helm
+  description: Helm package manager
+  type: script
+  check: which helm
+  commands:
+  - curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+- name: gcloud
+  description: Google Cloud SDK
+  type: script
+  check: which gcloud
+  commands:
+  - curl -fsSL https://sdk.cloud.google.com | bash
+- name: aws-cli
+  description: AWS CLI v2
+  type: script
+  check: which aws
+  commands:
+  - curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+  - unzip -qo /tmp/awscliv2.zip -d /tmp && sudo /tmp/aws/install
+  - rm -rf /tmp/awscliv2.zip /tmp/aws
+- name: azure-cli
+  description: Azure CLI
+  type: script
+  check: which az
+  commands:
+  - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+- name: oci-cli
+  description: Oracle Cloud CLI
+  type: script
+  check: which oci
+  commands:
+  - curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh | bash
+- name: zoho-cli
+  description: Zoho CRM CLI (installs the official Python SDK 2.0, not a standalone CLI)
+  type: pip
+  package: zohocrmsdk2_0
+  check: python3 -c "import zohocrmsdk2_0" 2>/dev/null

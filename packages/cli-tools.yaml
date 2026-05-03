@@ -1,0 +1,54 @@
+packages:
+- name: bat
+  description: cat with syntax highlighting and git integration
+  type: apt
+  package: bat
+  check: which bat || which batcat
+- name: jq
+  description: JSON processor
+  type: apt
+  package: jq
+  check: which jq
+- name: jaq
+  description: Fast near drop-in jq clone
+  type: script
+  check: which jaq
+  commands:
+  - |
+    JAQ_VERSION=$(curl -s https://api.github.com/repos/01mf02/jaq/releases/latest | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p') && sudo curl -sL "https://github.com/01mf02/jaq/releases/download/${JAQ_VERSION}/jaq-x86_64-unknown-linux-gnu" -o /usr/local/bin/jaq && sudo chmod +x /usr/local/bin/jaq
+- name: fzf
+  description: Fuzzy finder
+  type: apt
+  package: fzf
+  check: which fzf
+- name: ripgrep
+  description: Fast recursive grep
+  type: apt
+  package: ripgrep
+  check: which rg
+- name: fd-find
+  description: Fast find
+  type: apt
+  package: fd-find
+  check: which fdfind
+- name: exa
+  description: Modern maintained ls replacement
+  type: apt
+  package: eza
+  check: which eza
+- name: dust
+  description: Visual intuitive disk usage tree
+  type: script
+  check: which dust
+  commands:
+  - curl -sSfL https://raw.githubusercontent.com/bootandy/dust/master/install.sh | sh
+- name: gdu
+  description: Go disk usage (fast ncdu)
+  type: apt
+  package: gdu
+  check: which gdu
+- name: yt-dlp
+  description: Video downloader
+  type: apt
+  package: yt-dlp
+  check: which yt-dlp

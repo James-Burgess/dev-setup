@@ -1,0 +1,22 @@
+packages:
+- name: obsidian
+  description: Knowledge base
+  type: snap
+  check: which obsidian
+  commands:
+  - sudo snap install obsidian --classic
+- name: aerc
+  description: Modern terminal email client
+  type: apt
+  package: aerc
+  check: which aerc
+- name: borg
+  description: Borg deduplicating backup
+  type: apt
+  package: borgbackup
+  check: which borg
+- name: fnt
+  description: Font manager
+  type: apt
+  package: font-manager
+  check: which font-manager

@@ -1,0 +1,37 @@
+packages:
+- name: firefox
+  description: Firefox
+  type: snap
+  check: which firefox
+  commands:
+  - sudo snap install firefox
+- name: brave
+  description: Brave browser
+  type: snap
+  check: which brave
+  commands:
+  - sudo snap install brave
+- name: browsh
+  description: Text browser (TTY)
+  type: script
+  check: which browsh
+  commands:
+  - curl -fsSL "https://github.com/browsh-org/browsh/releases/download/v1.8.2/browsh_1.8.2_linux_amd64" -o /tmp/browsh && sudo install /tmp/browsh /usr/local/bin/browsh && rm /tmp/browsh
+- name: puppeteer
+  description: Headless Chrome
+  type: npm
+  check: npx puppeteer --version 2>/dev/null
+  commands:
+  - npm install -g puppeteer
+  depends_on:
+  - nvm
+- name: playwright
+  description: Cross-browser automation
+  type: script
+  check: which playwright
+  commands:
+  - npx playwright install-deps 2>/dev/null || true
+  - npm install -g playwright
+  - npx playwright install
+  depends_on:
+  - nvm
