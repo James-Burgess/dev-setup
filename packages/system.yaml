@@ -53,6 +53,7 @@ packages:
   - zsh
   commands:
   - bash <(curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh)
+  - test -f ~/.atuin/bin/atuin && mv ~/.atuin/bin/atuin ~/.local/bin/atuin && mv ~/.atuin/bin/atuin-update ~/.local/bin/atuin-update || true
 - name: gnupg
   description: GPG encryption & signing
   type: apt
@@ -97,6 +98,16 @@ packages:
   check: which imgcat
   depends_on:
   - python3-pip
+- name: fastfetch
+  description: Fast system info fetcher
+  type: apt
+  package: fastfetch
+  check: which fastfetch
+- name: figlet
+  description: ASCII art text banner
+  type: apt
+  package: figlet
+  check: which figlet
 - name: bashorg-motd
   description: bash.org quote MOTD
   type: script

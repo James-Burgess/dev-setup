@@ -67,6 +67,30 @@ packages:
   check: which pcopy
   commands:
   - go install github.com/binwiederhier/pcopy@latest
+- name: gum
+  description: Charmbracelet TUI styling toolkit
+  type: go
+  check: which gum
+  commands:
+  - go install github.com/charmbracelet/gum@latest
+- name: bubbletea
+  description: Go TUI framework (library)
+  type: script
+  check: test -d "$(go env GOMODCACHE)/github.com/charmbracelet/bubbletea@v"
+  commands:
+  - mkdir -p /tmp/go-mod-bootstrap && rm -rf /tmp/go-mod-bootstrap/go.mod && cd /tmp/go-mod-bootstrap && go mod init bootstrap 2>/dev/null && go get github.com/charmbracelet/bubbletea@latest && rm -rf /tmp/go-mod-bootstrap/go.mod
+- name: lipgloss
+  description: Go terminal styling (library)
+  type: script
+  check: test -d "$(go env GOMODCACHE)/github.com/charmbracelet/lipgloss@v"
+  commands:
+  - mkdir -p /tmp/go-mod-bootstrap && rm -rf /tmp/go-mod-bootstrap/go.mod && cd /tmp/go-mod-bootstrap && go mod init bootstrap 2>/dev/null && go get github.com/charmbracelet/lipgloss@latest && rm -rf /tmp/go-mod-bootstrap/go.mod
+- name: bubbles
+  description: Go TUI components (library)
+  type: script
+  check: test -d "$(go env GOMODCACHE)/github.com/charmbracelet/bubbles@v"
+  commands:
+  - mkdir -p /tmp/go-mod-bootstrap && rm -rf /tmp/go-mod-bootstrap/go.mod && cd /tmp/go-mod-bootstrap && go mod init bootstrap 2>/dev/null && go get github.com/charmbracelet/bubbles@latest && rm -rf /tmp/go-mod-bootstrap/go.mod
 - name: sesh
   description: Smart tmux session manager
   type: go

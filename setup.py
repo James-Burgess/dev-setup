@@ -3,8 +3,9 @@
 Dev Box Setup — orchestrator for the multi-stage pipeline.
 
 Stages:
-  1. Install  — stage_1_install.py  (package installation)
-  2. Login    — stage_2_login.py     (authenticate to services)
+  1. Install  — stage_1_install.py    (package installation)
+  2. Login    — stage_2_login.py       (authenticate to services)
+  3. Configure — stage_3_configure.py  (shell, dotfiles, system settings)
 
 Usage:
   python3 setup.py                     TUI — pick a stage, then select packages
@@ -23,14 +24,22 @@ import subprocess
 import sys
 from pathlib import Path
 
-# Ensure Go binaries are discoverable for all subprocess checks
-os.environ["PATH"] = os.path.expanduser("~/go/bin") + ":" + os.environ.get("PATH", "")
+os.environ.setdefault("GOBIN", os.path.expanduser("~/.local/bin"))
+os.environ.setdefault("GOPATH", os.path.expanduser("~/.local/share/go"))
+# Prepend ~/.local/bin (new go-install target); keep legacy ~/go/bin as fallback
+home = os.path.expanduser("~")
+paths = [f"{home}/.local/bin", f"{home}/go/bin"] + os.environ.get("PATH", "").split(":")
+# dedupe preserving order
+seen = set()
+new_path = ":".join(p for p in paths if p and not (p in seen or seen.add(p)))
+os.environ["PATH"] = new_path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 
 STAGE_SCRIPTS = {
     1: SCRIPT_DIR / "stage_1_install.py",
     2: SCRIPT_DIR / "stage_2_login.py",
+    3: SCRIPT_DIR / "stage_3_configure.py",
 }
 
 

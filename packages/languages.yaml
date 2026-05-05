@@ -11,7 +11,7 @@ packages:
   type: apt
   package: golang-go
   check: which go
-  post_install:
+  post_install:  # stage 1 runs in bash; chezmoi dotfiles fix this in stage 3
   - 'grep -q "$HOME/go/bin" ~/.bashrc || echo "export PATH=\"$HOME/go/bin:$PATH\"" >> ~/.bashrc'
 - name: pyenv
   description: Python version manager
