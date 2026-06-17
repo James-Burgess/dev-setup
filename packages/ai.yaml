@@ -20,3 +20,18 @@ packages:
   check: python3 -c "import browser_use" 2>/dev/null
   depends_on:
   - python3-pip
+- name: openai
+  description: OpenAI API client with CLI
+  type: pip
+  package: openai
+  check: which openai
+- name: mcp
+  description: Model Context Protocol CLI
+  type: pip
+  package: mcp
+  check: which mcp
+- name: agent-browser
+  description: Browser automation CLI for AI agents
+  type: cargo
+  package: agent-browser
+  check: which agent-browser

@@ -52,3 +52,39 @@ packages:
   type: apt
   package: yt-dlp
   check: which yt-dlp
+- name: lynx
+  description: Text-mode web browser
+  type: apt
+  package: lynx
+  check: which lynx
+- name: rich-cli
+  description: Rich CLI toolkit
+  type: pip
+  package: rich-click
+  check: which rich-click
+- name: tqdm
+  description: Fast extensible progress bar
+  type: pip
+  package: tqdm
+  check: which tqdm
+- name: art
+  description: ASCII art generator
+  type: pip
+  package: art
+  check: which art
+- name: sparklines
+  description: Sparkline charts for terminal
+  type: pip
+  package: sparklines
+  check: which sparklines
+- name: uipro-cli
+  description: UI prototyping CLI
+  type: npm
+  check: which uipro-cli
+  commands:
+  - npm install -g uipro-cli
+- name: autojump
+  description: Fast directory navigation based on history
+  type: apt
+  package: autojump
+  check: which autojump

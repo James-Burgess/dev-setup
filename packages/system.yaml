@@ -108,6 +108,16 @@ packages:
   type: apt
   package: figlet
   check: which figlet
+- name: ddgr
+  description: DuckDuckGo from the terminal
+  type: apt
+  package: ddgr
+  check: which ddgr
+- name: ncdu
+  description: NCurses disk usage analyzer
+  type: apt
+  package: ncdu
+  check: which ncdu
 - name: bashorg-motd
   description: bash.org quote MOTD
   type: script

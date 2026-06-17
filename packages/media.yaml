@@ -16,3 +16,24 @@ packages:
   check: which webtorrent
   commands:
   - npm install -g webtorrent-cli
+- name: gallery-dl
+  description: Image gallery downloader
+  type: pip
+  package: gallery-dl
+  check: which gallery-dl
+- name: instaloader
+  description: Instagram downloader
+  type: pip
+  package: instaloader
+  check: which instaloader
+- name: unsplash-cli
+  description: Unsplash image downloader
+  type: npm
+  check: which unsplash-cli
+  commands:
+  - npm install -g unsplash-cli
+- name: pdfplumber
+  description: PDF data extraction toolkit
+  type: pip
+  package: pdfplumber
+  check: which pdfplumber

@@ -12,9 +12,18 @@ Usage:
 """
 
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
+
+home = os.path.expanduser("~")
+os.environ.setdefault("GOBIN", f"{home}/go/bin")
+os.environ.setdefault("GOPATH", f"{home}/.local/share/go")
+paths = [f"{home}/.local/bin", f"{home}/go/bin"] + os.environ.get("PATH", "").split(":")
+seen = set()
+new_path = ":".join(p for p in paths if p and not (p in seen or seen.add(p)))
+os.environ["PATH"] = new_path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 DEFAULT_DIR = SCRIPT_DIR / "packages"
@@ -25,6 +34,7 @@ packages_dir: Path = DEFAULT_DIR
 # ═══════════════════════════════════════════════════════════════════════════════
 # YAML loading
 # ═══════════════════════════════════════════════════════════════════════════════
+
 
 def load_manifest():
     """Returns packages by merging all .yaml files in packages_dir."""
@@ -61,13 +71,19 @@ def load_manifest():
 # Helpers
 # ═══════════════════════════════════════════════════════════════════════════════
 
+
 def is_installed(pkg):
     check = pkg.get("check", "")
     if not check:
         return False
     try:
-        subprocess.run(check, shell=True, check=True,
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(
+            check,
+            shell=True,
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
         return True
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
@@ -85,8 +101,12 @@ def run_cmd(cmd):
 
 def _find_cmd(name):
     try:
-        subprocess.run(["which", name], check=True,
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(
+            ["which", name],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
         return True
     except subprocess.CalledProcessError:
         return False
@@ -125,6 +145,7 @@ def resolve_order(selected):
 # ═══════════════════════════════════════════════════════════════════════════════
 # Package installer
 # ═══════════════════════════════════════════════════════════════════════════════
+
 
 def install_package(pkg, unattended=False, dry_run=False):
     name = pkg["name"]
@@ -187,6 +208,7 @@ def install_package(pkg, unattended=False, dry_run=False):
 # Runner
 # ═══════════════════════════════════════════════════════════════════════════════
 
+
 def run_install_list(ordered, unattended=False, dry_run=False):
     failed = []
     skipped = []
@@ -208,7 +230,9 @@ def run_install_list(ordered, unattended=False, dry_run=False):
 
 def print_results(results):
     print(f"\n{'─' * 55}")
-    print(f"  {results['ok']} ok, {len(results['failed'])} failed, {len(results['skipped'])} skipped")
+    print(
+        f"  {results['ok']} ok, {len(results['failed'])} failed, {len(results['skipped'])} skipped"
+    )
 
     if results["skipped"]:
         print("\nSkipped (needs manual run):")
@@ -225,6 +249,7 @@ def print_results(results):
 # ═══════════════════════════════════════════════════════════════════════════════
 # TUI
 # ═══════════════════════════════════════════════════════════════════════════════
+
 
 def tui_select_packages(packages):
     """Show checkbox picker grouped by source file and install selected packages."""
@@ -276,6 +301,7 @@ def tui_select_packages(packages):
 # CLI
 # ═══════════════════════════════════════════════════════════════════════════════
 
+
 def main():
     global packages_dir
 
@@ -283,12 +309,21 @@ def main():
         description="Dev Box Setup — install packages from YAML manifests"
     )
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("--all", action="store_true", help="Install all packages, skip interactive")
+    group.add_argument(
+        "--all", action="store_true", help="Install all packages, skip interactive"
+    )
     group.add_argument("--select", type=str, help="Comma-separated package names")
-    group.add_argument("--list", action="store_true", help="List all packages grouped by source")
+    group.add_argument(
+        "--list", action="store_true", help="List all packages grouped by source"
+    )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--unattended", action="store_true")
-    parser.add_argument("--packages-dir", type=str, default=str(DEFAULT_DIR), help="Directory containing package .yaml files")
+    parser.add_argument(
+        "--packages-dir",
+        type=str,
+        default=str(DEFAULT_DIR),
+        help="Directory containing package .yaml files",
+    )
     args = parser.parse_args()
 
     packages_dir = Path(args.packages_dir)
@@ -316,7 +351,9 @@ def main():
             for p in pkgs:
                 tag = "⚡" if p.get("interactive") else "  "
                 ok = "✓" if is_installed(p) else " "
-                print(f"  {tag}[{ok}] {p['name']:28s} [{p.get('type', '?'):7s}]  {p.get('description', '')}")
+                print(
+                    f"  {tag}[{ok}] {p['name']:28s} [{p.get('type', '?'):7s}]  {p.get('description', '')}"
+                )
         sys.exit(0)
 
     # ── --select ──────────────────────────────────────────────────────────────

@@ -13,11 +13,20 @@ packages:
   check: which gh
   depends_on:
   - system-update
-- name: neovim
-  description: Text editor
+- name: vim
+  description: Vim editor (fallback)
   type: apt
-  package: neovim
+  package: vim
+  check: which vim
+- name: neovim
+  description: Text editor (latest stable binary release)
+  type: script
   check: which nvim
+  commands:
+  - curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+  - sudo rm -rf /opt/nvim-linux-x86_64
+  - sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+  - ln -sf /opt/nvim-linux-x86_64/bin/nvim ~/.local/bin/nvim
 - name: tmux
   description: Terminal multiplexer
   type: apt
@@ -107,3 +116,56 @@ packages:
   type: go
   package: github.com/s0rg/crawley/cmd/crawley
   check: which crawley
+- name: pnpm
+  description: Fast disk-efficient package manager
+  type: npm
+  check: which pnpm
+  commands:
+  - npm install -g pnpm
+- name: biome
+  description: Formatter and linter for web files
+  type: npm
+  check: which biome
+  commands:
+  - npm install -g @biomejs/biome
+- name: pyright
+  description: Static type checker for Python
+  type: npm
+  check: which pyright
+  commands:
+  - npm install -g pyright
+- name: sqlite3
+  description: SQLite database CLI
+  type: apt
+  package: sqlite3
+  check: which sqlite3
+- name: black
+  description: Uncompromising Python code formatter
+  type: pip
+  package: black
+  check: which black
+- name: pyinstrument
+  description: Statistical Python profiler
+  type: pip
+  package: pyinstrument
+  check: which pyinstrument
+- name: fastapi
+  description: FastAPI web framework CLI
+  type: pip
+  package: fastapi
+  check: which fastapi
+- name: uvicorn
+  description: ASGI server for Python
+  type: pip
+  package: uvicorn
+  check: which uvicorn
+- name: httpx
+  description: Next-gen HTTP client with CLI
+  type: pip
+  package: httpx
+  check: which httpx
+- name: typer
+  description: CLI library with shell completion
+  type: pip
+  package: typer
+  check: which typer

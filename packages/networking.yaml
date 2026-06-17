@@ -5,6 +5,11 @@ packages:
   check: which nethogs
   commands:
   - sudo apt install -y nethogs iftop nload iperf3 tcpdump
+- name: wifi
+  description: WiFi CLI scanner and manager
+  type: pip
+  package: wifi
+  check: which wifi
 - name: tailscale
   description: Mesh VPN
   type: script

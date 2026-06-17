@@ -24,7 +24,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-os.environ.setdefault("GOBIN", os.path.expanduser("~/.local/bin"))
+os.environ.setdefault("GOBIN", os.path.expanduser("~/go/bin"))
 os.environ.setdefault("GOPATH", os.path.expanduser("~/.local/share/go"))
 # Prepend ~/.local/bin (new go-install target); keep legacy ~/go/bin as fallback
 home = os.path.expanduser("~")
@@ -59,17 +59,23 @@ def run_stage(stage_num, args):
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Dev Box Setup — multi-stage pipeline"
-    )
+    parser = argparse.ArgumentParser(description="Dev Box Setup — multi-stage pipeline")
     parser.add_argument("--all", action="store_true", help="Run all stages")
-    parser.add_argument("--unattended", action="store_true", help="Run all stages, exit non-zero on failure")
+    parser.add_argument(
+        "--unattended",
+        action="store_true",
+        help="Run all stages, exit non-zero on failure",
+    )
     parser.add_argument("--select", type=str, help="Comma-separated package names")
-    parser.add_argument("--list", action="store_true", help="List all packages grouped by source")
+    parser.add_argument(
+        "--list", action="store_true", help="List all packages grouped by source"
+    )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--stage", type=int, help="Run a single stage (e.g. --stage 2)")
     parser.add_argument("--from-stage", type=int, help="Run from stage N onward")
-    parser.add_argument("--packages-dir", type=str, help="Directory containing package .yaml files")
+    parser.add_argument(
+        "--packages-dir", type=str, help="Directory containing package .yaml files"
+    )
     args = parser.parse_args()
 
     extra = []
@@ -79,7 +85,7 @@ def main():
         extra.append("--list")
     if args.dry_run:
         extra.append("--dry-run")
-    if args.unattended:
+    if args.unattended or args.all:
         extra.append("--unattended")
     if args.packages_dir:
         extra.extend(["--packages-dir", args.packages_dir])

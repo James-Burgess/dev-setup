@@ -11,8 +11,10 @@ packages:
   type: apt
   package: golang-go
   check: which go
-  post_install:  # stage 1 runs in bash; chezmoi dotfiles fix this in stage 3
-  - 'grep -q "$HOME/go/bin" ~/.bashrc || echo "export PATH=\"$HOME/go/bin:$PATH\"" >> ~/.bashrc'
+  post_install:
+  - 'grep -q "GOBIN=" ~/.bashrc || echo "export GOBIN=\"$HOME/go/bin\"" >> ~/.bashrc'
+  - 'grep -q "GOPATH=" ~/.bashrc || echo "export GOPATH=\"$HOME/go\"" >> ~/.bashrc'
+  - 'grep -q "$HOME/go/bin" ~/.bashrc || echo "export PATH=\"$HOME/go/bin:$HOME/.local/bin:$PATH\"" >> ~/.bashrc'
 - name: pyenv
   description: Python version manager
   type: script
@@ -27,6 +29,26 @@ packages:
   check: which cargo
   commands:
   - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+- name: pipx
+  description: Run Python applications in isolated environments
+  type: apt
+  package: pipx
+  check: which pipx
+- name: python-is-python3
+  description: Symlink python → python3
+  type: apt
+  package: python-is-python3
+  check: test -L /usr/bin/python
+- name: ruby
+  description: Ruby + RubyGems
+  type: apt
+  package: ruby-rubygems
+  check: which ruby
+- name: default-jre
+  description: Java runtime (needed by signal-cli)
+  type: apt
+  package: default-jre
+  check: which java
 - name: nvm
   description: Node version manager
   type: script

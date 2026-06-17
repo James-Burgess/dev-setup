@@ -54,12 +54,6 @@ packages:
   type: apt
   package: john
   check: which john
-- name: metasploit
-  description: Pentest framework
-  type: script
-  check: which msfconsole
-  commands:
-  - curl -fsSL https://raw.githubusercontent.com/rapid7/metasploit-framework/master/docs/setup.sh | bash 2>/dev/null || true
 - name: subfinder
   description: Subdomain discovery
   type: go
@@ -82,3 +76,10 @@ packages:
   description: Social username search
   type: pip
   check: which sherlock
+- name: wayback-machine-downloader
+  description: Download from Wayback Machine
+  type: script
+  check: which wayback_machine_downloader
+  commands:
+  - sudo apt install -y ruby-rubygems
+  - sudo gem install wayback_machine_downloader
