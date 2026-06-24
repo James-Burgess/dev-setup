@@ -32,6 +32,13 @@ packages:
   type: apt
   package: tmux
   check: which tmux
+  post_install:
+  - mkdir -p ~/.config/tmux/plugins
+  - test -d ~/.config/tmux/plugins/catppuccin || git clone https://github.com/catppuccin/tmux.git ~/.config/tmux/plugins/catppuccin
+  - test -d ~/.config/tmux/plugins/tmux-resurrect || git clone https://github.com/tmux-plugins/tmux-resurrect ~/.config/tmux/plugins/tmux-resurrect
+  - test -d ~/.config/tmux/plugins/tmux-continuum || git clone https://github.com/tmux-plugins/tmux-continuum ~/.config/tmux/plugins/tmux-continuum
+  - mkdir -p ~/.config/tmux/plugins/catppuccin/tmux
+  - test -f ~/.config/tmux/plugins/catppuccin/tmux/catppuccin.tmux || ln -s ../catppuccin.tmux ~/.config/tmux/plugins/catppuccin/tmux/catppuccin.tmux
 - name: chezmoi
   description: Dotfile manager
   type: script

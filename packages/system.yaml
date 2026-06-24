@@ -29,6 +29,8 @@ packages:
   - zsh
   commands:
   - curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash || true
+  post_install:
+  - test -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions || git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 - name: starship
   description: Minimal blazing-fast customizable prompt
   type: script
